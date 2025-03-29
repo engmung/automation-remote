@@ -7,15 +7,38 @@ function ProgramCard({ program }) {
   const [message, setMessage] = useState('');
 
   const handleExecute = async (e) => {
-    // 기본 이벤트 동작 방지 (중요: 이것이 새 창 열림을 방지합니다)
+    // 기본 이벤트 동작 방지
     e.preventDefault();
     
     try {
       setStatus('loading');
       setMessage('실행 중...');
       
-      // API 호출 (POST 메서드 사용)
-      const response = await axios.post(program.url, {});
+      // 원래 URL에서 HTTP 프로토콜을 사용하는지 확인
+      const isHttp = program.url.startsWith('http:');
+      
+      let response;
+      
+      // HTTP URL이면 프록시 사용, HTTPS면 직접 요청
+      if (isHttp) {
+        // Netlify Function을 통해 프록시
+        const encodedUrl = encodeURIComponent(program.url);
+        const proxyUrl = `/.netlify/functions/proxy?target=${encodedUrl}`;
+        
+        if (program.url.includes('process-reports')) {
+          response = await axios.post(proxyUrl, {});
+        } else {
+          response = await axios.get(proxyUrl);
+        }
+      } else {
+        // HTTPS URL이면 직접 요청
+        if (program.url.includes('process-reports')) {
+          response = await axios.post(program.url, {});
+        } else {
+          response = await axios.get(program.url);
+        }
+      }
+      
       console.log('API 응답:', response.data);
       
       // 성공 시
