@@ -1,0 +1,36 @@
+.program-card {
+    background-color: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+  }
+  
+  .program-card:hover {
+    transform: translateY(-5px);
+  }
+  
+  .program-card h2 {
+    margin-top: 0;
+    color: #2c3e50;
+  }
+  
+  .program-card p {
+    color: #7f8c8d;
+    margin-bottom: 20px;
+  }
+  
+  .program-card button {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+  }
+  
+  .program-card button:hover {
+    background-color: #2980b9;
+  }

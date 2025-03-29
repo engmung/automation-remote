@@ -1,25 +1,29 @@
-import logo from './logo.svg';
+import React from 'react';
+import { BrowserRouter, Routes, Route, Navigate, useParams } from 'react-router-dom';
+import Dashboard from './Dashboard';
 import './App.css';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/:password" element={<PasswordProtect />} />
+        <Route path="/test" element={<Dashboard isTest={true} />} />
+        <Route path="/" element={<Navigate to="/wrong" replace />} />
+      </Routes>
+    </BrowserRouter>
   );
+}
+
+// 비밀번호 확인 컴포넌트
+function PasswordProtect() {
+  const { password } = useParams();
+  
+  if (password === 'test') {
+    return <Dashboard isTest={true} />;
+  }
+  
+  return <Dashboard password={password} />;
 }
 
 export default App;
